@@ -1,4 +1,4 @@
-# Flask Image Classification
+# Cat_Vs_Rabbit Image Classification
 
 This is a simple Flask web application for image classification using a pre-trained deep learning model. The application allows users to upload images, and the model predicts whether the image contains a "Cat" or a "Rabbit."
 
