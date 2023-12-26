@@ -8,11 +8,10 @@ from PIL import Image
 
 app = Flask(__name__,static_folder='static')
 
-# Ensure the 'uploads' directory exists
+
 uploads_dir = os.path.join(app.root_path, 'uploads')
 os.makedirs(uploads_dir, exist_ok=True)
 
-# Load the trained model
 model = keras.models.load_model("my_model.h5")
 
 # Define the allowed file extensions
@@ -42,28 +41,21 @@ def upload_file():
         return jsonify({"error": "No selected file"})
 
     if file and allowed_file(file.filename):
-        # Save the file in the 'uploads' directory
+       
         filename = secure_filename(file.filename)
         file_path = os.path.join(uploads_dir, filename)
         file.save(file_path)
 
-        # Preprocess the image
         img = image.load_img(file_path, target_size=(256, 256))
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
 
-        # Make prediction
         prediction = model.predict(img_array)
 
-        # Remove the uploaded file
         os.remove(file_path)
 
-        # Convert prediction to class label
         class_label = predict_class(prediction[0][0])
 
         return jsonify({"prediction": class_label})
 
     return jsonify({"error": "Invalid file format"})
-
-if __name__ == '__main__':
-    app.run(debug=True)
