@@ -59,3 +59,6 @@ def upload_file():
         return jsonify({"prediction": class_label})
 
     return jsonify({"error": "Invalid file format"})
+
+if __name__=="__main__":
+    app.run(host="0.0.0.0",port=8000)
